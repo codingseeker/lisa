@@ -1,0 +1,51 @@
+# lisa curated MITRE ATT&CK mapping subset
+#
+# What this is
+#   A small, hand-reviewed mapping from lisa correlation rule identifiers
+#   to MITRE ATT&CK techniques. It lets a report say which documented technique
+#   a configuration weakness is relevant to, using the technique names and
+#   tactics published by MITRE.
+#
+# What this is not
+#   Evidence of adversary activity. A technique listed here describes a
+#   documented behaviour an adversary might attempt. A mapping is not evidence
+#   that the technique was attempted, that an adversary exists on the host, or
+#   that anything was exploited. Only lisa's own observations justify a
+#   mapping; the technique names and tactics are the part taken from the ATT&CK
+#   catalogue.
+#
+# Versioning
+#   The dataset_version below is the revision of *this curated subset*, not of
+#   MITRE ATT&CK. lisa has no network access and cannot verify the current
+#   ATT&CK release, so it deliberately does not assert one. Records should be
+#   re-checked against the referenced documentation pages when the subset is next
+#   updated, and the technique name or tactic updated if it has changed upstream.
+#
+# Attribution
+#   Technique names and tactics are (c) The MITRE Corporation. MITRE ATT&CK is
+#   published under the Apache License 2.0; terms are at
+#   https://attack.mitre.org/resources/terms-of-use/. The mapping choices and the
+#   relevance notes are original work by this project.
+#
+# Format
+#   correlation_rule <TAB> technique_id <TAB> technique_name <TAB> tactic <TAB> reference <TAB> relevance
+#
+#   correlation_rule  an LS-COR-* identifier defined in internal/correlation
+#   technique_id      ATT&CK technique identifier, validated as T#### or T####.###
+#   technique_name    the technique name as published by MITRE
+#   tactic            the tactic the technique belongs to, as published
+#   reference         documentation location for the technique
+#   relevance         why this technique is relevant to the rule's observation,
+#                     phrased as a documented possibility and never as a claim
+#
+# A rule with no defensible technique is intentionally absent. An unmapped
+# correlation is reported without ATT&CK context rather than being given a
+# technique chosen to make a report look comprehensive.
+#
+# dataset_version: lisa-attack-curated v1
+# reviewed_against: MITRE ATT&CK, Enterprise matrix, technique names and tactics as published on the referenced documentation pages
+#
+LS-COR-001	T1543.002	Systemd Service	Persistence	https://attack.mitre.org/techniques/T1543/002/	A unit or scheduled job that another user can rewrite is a documented way to gain persistence, because the host starts it without operator involvement. The tool observed the writable file and the automatic execution, not an attempt to change either.
+LS-COR-002	T1548.001	Setuid and Setgid	Privilege Escalation	https://attack.mitre.org/techniques/T1548/001/	A setuid or setgid binary whose owner is an unprivileged account combines a documented privilege transition with untrusted control of the file that provides it. The tool observed both properties on one path, not any use of the escalation path.
+LS-COR-003	T1036.005	Match Legitimate Resource Name or Location	Defense Evasion	https://attack.mitre.org/techniques/T1036/005/	Executables placed in world-writable staging directories are a documented way to have a file appear where an operator expects only data. The tool observed an executable and a payload-shaped artifact in one staging location, and identified neither as malicious.
+LS-COR-004	T1552.001	Credentials In Files	Credential Access	https://attack.mitre.org/techniques/T1552/001/	Readable key material combined with a weakened remote access policy is a documented route to credential access. The tool observed both weaknesses; it cannot show that the credentials relate to the access policy, and makes no claim that they were read.

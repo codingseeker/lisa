@@ -1,0 +1,135 @@
+# lisa curated GTFOBins reference dataset
+#
+# Purpose: supplemental defensive context for SUID and SGID findings.
+#
+# Provenance and attribution:
+#   The GTFOBins project (https://github.com/GTFOBins/GTFOBins, MIT licence)
+#   documents Unix binaries that are commonly shipped with elevated privilege
+#   and are known to be usable in unintended ways. This file does NOT reproduce
+#   that project's content. It is an independent, deliberately small selection
+#   with original one-sentence explanations written for this tool.
+#
+# Coverage and limitations:
+#   * This list is NOT exhaustive and is not a mirror of GTFOBins.
+#   * It intentionally omits anything whose relevance depends on embedded
+#     firmware, appliance vendor builds or historical vulnerabilities.
+#   * Absence from this list is NOT evidence that a binary is safe.
+#   * A match is contextual risk information only. It does not indicate that a
+#     vulnerability was exploited, that a host is compromised, or that the
+#     binary is malicious.
+#
+# Format: name <TAB> category <TAB> summary
+#   name     exact binary basename, no path separators, case sensitive
+#   category one of: shell, interpreter, editor, archive, filesystem,
+#            network, system
+#   summary  one concise original sentence, no tabs or newlines
+#
+# Blank lines and lines beginning with '#' are ignored.
+#
+# Maintaining this file responsibly:
+#   * Add an entry only when the binary is plausibly present on a general-purpose
+#     Linux host and its presence with SUID/SGID is worth an analyst's time.
+#   * Keep the summary defensive and descriptive. Never add usage instructions,
+#     command lines or exploitation steps.
+#   * Preserve the tab-separated shape; the loader rejects malformed lines.
+#   * Names must be unique; the loader rejects duplicates.
+#   * Re-run `go test ./internal/gtfo ./internal/detectors` after editing.
+#
+# Source of the concept: GTFOBins, MIT licence, by the GTFOBins contributors.
+
+# --- shell interpreters -----------------------------------------------------
+sh	shell	POSIX shell interpreter. Distributions never ship one with SUID or SGID set; if one does, any local user can run a full privileged shell.
+bash	shell	GNU shell interpreter. Carries the same risk as any privileged interactive shell.
+dash	shell	Minimal POSIX shell used as /bin/sh on Debian-derived systems.
+zsh	shell	Z shell interpreter. A privileged copy grants an interactive session with the owner's identity.
+ksh	shell	Korn shell interpreter. An interactive shell should never carry elevated privilege.
+csh	shell	C shell interpreter.
+tcsh	shell	Enhanced C shell interpreter.
+env	shell	Coreutils environment runner. It executes another program in a chosen environment, so a privileged copy lends its identity to arbitrary programs.
+
+# --- scripting language interpreters ---------------------------------------
+awk	interpreter	Pattern-scanning interpreter that evaluates a program supplied in its arguments or input.
+gawk	interpreter	GNU awk interpreter.
+mawk	interpreter	Lightweight awk interpreter used as the default awk on some distributions.
+nawk	interpreter	The One True Awk interpreter.
+perl	interpreter	Interpreted language that executes program text taken from arguments, files or standard input.
+python	interpreter	Interpreted language interpreter.
+python2	interpreter	Python 2 interpreter.
+python3	interpreter	Python 3 interpreter.
+ruby	interpreter	Interpreted language interpreter.
+php	interpreter	PHP language interpreter, also usable as a command line processor.
+lua	interpreter	Lua interpreter; evaluates chunks of code supplied at run time.
+tclsh	interpreter	Tcl interpreter, commonly embedded in network appliances.
+wish	interpreter	Tcl/Tk windowing shell.
+expect	interpreter	Automates interactive programs and is frequently shipped privileged in embedded devices.
+
+# --- editors and pagers -----------------------------------------------------
+vi	editor	Text editor. An editor started by a user on a privileged file opens a shell as that user.
+vim	editor	Vi Improved, a common interactive editor.
+nvim	editor	Neovim editor.
+view	editor	Vi started in read-only mode.
+ex	editor	Line editor derived from vi.
+ed	editor	Classic line editor that accepts commands from standard input.
+emacs	editor	Extensible editor that can run arbitrary shell commands.
+nano	editor	Terminal text editor.
+less	editor	Terminal pager that can spawn a shell from its escape interface.
+more	editor	Terminal pager with a shell escape option.
+man	editor	Manual viewer; commonly setuid to consult the system manual database.
+sed	interpreter	Stream editor that transforms its input using an expression given on the command line.
+
+# --- archivers and stream filters -------------------------------------------
+tar	archive	Archive utility that extracts and writes files, including ones with elevated ownership.
+zip	archive	Archive utility that creates and extracts compressed archives.
+unzip	archive	Archive extraction utility.
+gzip	archive	Compressor; the decompressor path can be invoked to write files.
+gunzip	archive	Decompressor.
+zcat	archive	Decompressor that writes to standard output.
+bzip2	archive	Compressor.
+bunzip2	archive	Decompressor.
+bzcat	archive	Decompressor that writes to standard output.
+xz	archive	Compressor.
+xzcat	archive	Decompressor that writes to standard output.
+cpio	archive	Archive utility that reads a file list and writes the named files.
+
+# --- file and filesystem utilities ------------------------------------------
+find	filesystem	Recursive file walker that evaluates an expression supplied on the command line.
+cp	filesystem	Copy utility that creates files with a chosen ownership and mode.
+mv	filesystem	Move and rename utility.
+install	filesystem	Copy utility that explicitly sets ownership and permission bits on the destination.
+rsync	filesystem	Synchronisation utility that writes files and can preserve attributes.
+ln	filesystem	Creates hard and symbolic links.
+mount	filesystem	Mounts filesystems and can expose devices to unprivileged users.
+umount	filesystem	Unmounts filesystems.
+
+# --- network clients ---------------------------------------------------------
+wget	network	Command line downloader that retrieves arbitrary remote content to disk.
+curl	network	Command line transfer tool that can write arbitrary remote content to disk.
+nc	network	Netcat. Opens arbitrary TCP or UDP connections and can bind a listening shell to a privileged port.
+ncat	network	Netcat successor from the Nmap project.
+netcat	network	Traditional netcat implementation.
+socat	network	Multipurpose relay that moves data between arbitrary endpoints.
+ftp	network	File transfer client.
+tftp	network	Trivial file transfer client.
+ssh	network	Secure shell client.
+scp	network	Secure copy client.
+sftp	network	Secure file transfer client.
+nmap	network	Network scanner.
+ping	network	ICMP probe utility, historically setuid to open a raw socket.
+
+# --- account and service management -----------------------------------------
+su	system	Switches to another user account.
+sudo	system	Runs a command as another user.
+passwd	system	Changes account passwords and is legitimately setuid on most systems.
+chsh	system	Changes a user's login shell and is legitimately setuid.
+chfn	system	Changes a user's GECOS information.
+gpasswd	system	Administers group membership.
+newgrp	system	Starts a new shell with a supplementary group.
+systemctl	system	Controls systemd units and is legitimately setuid on some systems.
+service	system	SysV service control script.
+crontab	system	Edits the per-user crontab and is legitimately setuid.
+at	system	Schedules one-time jobs.
+dd	system	Reads and writes raw blocks at arbitrary offsets across arbitrary devices.
+ar	archive	Archive builder that can write members with chosen ownership.
+chroot	system	Changes the apparent root directory for a process.
+gdb	system	Debugger that grants broad access to process memory.
+strace	system	Traces system calls and reads arbitrary process memory.

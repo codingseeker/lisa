@@ -1,0 +1,101 @@
+# Go build artifacts
+/lisa
+/lisa.exe
+/bin/
+/dist/
+*.exe
+*.dll
+*.so
+*.dylib
+*.a
+*.o
+*.obj
+*.test
+*.out
+
+# Test and coverage artifacts
+coverage.out
+coverage.html
+coverage.txt
+*.cover
+*.prof
+*.profile
+*.pprof
+*.trace
+test-results/
+junit.xml
+
+# Debugging and profiling
+debug
+debug.test
+*.core
+core
+core.*
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+*.cer
+secrets/
+credentials/
+*_secret*
+*_credentials*
+
+# Local configuration
+config.local.*
+*.local.yaml
+*.local.yml
+*.local.json
+config.override.*
+
+# Logs and scan output
+*.log
+logs/
+scan-results/
+scan-output/
+reports/
+*.sarif
+*.jsonl
+
+# Temporary files and caches
+*.tmp
+*.temp
+*.swp
+*.swo
+*.bak
+*.orig
+*.cache
+tmp/
+temp/
+.cache/
+.cache-*/
+*.pid
+
+# Go workspace files
+go.work
+go.work.sum
+
+# IDE and editor files
+.idea/
+.vscode/
+*.sublime-workspace
+*.sublime-project
+*.code-workspace
+*~
+
+# Operating system files
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Local development
+.nfs*
